@@ -1,5 +1,5 @@
 # Python 3+
-# Fill the lines 16, 43 & 44 with your own values
+# Fill the lines 16, 44 & 45 with your own values
 # Example : !meme ramp . studying . coding discord bots
 
 import discord
