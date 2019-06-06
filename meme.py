@@ -24,7 +24,7 @@ async def on_ready():
 async def meme(ctx, *, arg):
     # Get some help by typing !meme help
     if arg == 'help':
-        await bot.say("""```!meme [meme name] . [text 1] . [text 2]```You can see the full list of available memes here : https://api.imgflip.com/get_memes""")
+        await bot.say("""```!meme [meme name] . [text 1] . [text 2]```You can see the full list of available memes here : https://imgflip.com/memetemplates""")
     else:
         args = arg.split('.')
 
