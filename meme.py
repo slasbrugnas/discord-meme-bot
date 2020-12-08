@@ -3,17 +3,25 @@
 # Example : !meme ramp . studying . coding discord bots
 
 import discord
+import os
 from discord.ext.commands import Bot
 from discord.ext import commands
+from dotenv import load_dotenv, find_dotenv
 import json
 import requests
+
+load_dotenv(find_dotenv())
+
+# The token of the discord bot (https://discordapp.com/developers/applications/)
+TOKEN = os.environ.get("TOKEN")
+# ImgFlip Ids
+USERNAME = os.environ.get("IMGFLIP_USERNAME")
+PASSWORD = os.environ.get("IMGFLIP_PASSWORD")
 
 bot = commands.Bot(command_prefix="!")
 # Removing the default help command
 bot.remove_command('help')
 
-# The token of the discord bot (https://discordapp.com/developers/applications/)
-TOKEN = 'your token here'
 
 @bot.event
 async def on_ready():
@@ -24,29 +32,27 @@ async def on_ready():
 async def meme(ctx, *, arg):
     # Get some help by typing !meme help
     if arg == 'help':
-        await bot.say("""```!meme [meme name] . [text 1 (optional)] . [text 2 (optional)]```You can see the full list of available memes here : https://imgflip.com/memetemplates""")
+        await ctx.send("""```!meme [meme name] ; [text 1 (optional)] ; [text 2 (optional)] ; ... ; [text n (optional)]```You can see the full list of available memes here : https://imgflip.com/memetemplates""")
     else:
-        args = arg.split('.')
+        args = arg.split(';')
 
         meme = args[0].rstrip().lstrip()
-        text0 = ' '
-        text1 = ' '
-        if len(args) > 1:
-            text0 = args[1].rstrip().lstrip()
-        if len(args) > 2:
-            text1 = args[2].rstrip().lstrip()
+        boxes = []
+
+        for text in args[1:]:
+            boxes.append(text.rstrip().lstrip())
 
         response = requests.get("https://api.imgflip.com/get_memes")
         data = json.loads(response.text)
 
-        # You need to create an account on imgflip to use the API
-        payload = { 'template_id': 'undefined',
-                    'username': 'user', # imgflip username
-                    'password': 'pass', # imgflip password
-                    'text0': text0,
-                    'text1': text1
-                    }
-        url = 'undefined'
+        payload = {
+            'template_id': 'undefined',
+            'username': USERNAME,
+            'password': PASSWORD,
+        }
+
+        for idx, box in enumerate(boxes):
+            payload['boxes[{}][text]'.format(idx)] = box
 
         for d in data['data']['memes']:
             if meme.lower() in d['name'].lower():
@@ -55,12 +61,13 @@ async def meme(ctx, *, arg):
             else:
                 continue
 
-        if payload['template_id'] is not 'undefined':
+        url = 'undefined'
+        if payload['template_id'] != 'undefined':
             response = requests.post('https://api.imgflip.com/caption_image', params=payload)
             data = json.loads(response.text)
             url = json.dumps(data['data']['url'])
-            await bot.say(url.strip('"'))
+            await ctx.send(url.strip('"'))
         else:
-            await bot.say('Meme not found')
+            await ctx.send('Meme not found')
 
 bot.run(TOKEN)

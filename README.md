@@ -1,6 +1,8 @@
 # discord-meme-bot
-This is a discord bot that allow the user to quickly create simple memes using the imgflip API
+This is a discord bot that allow users to quickly create memes using the imgflip API
+* Requires Python 3
 * Create your own discord dev app on https://discordapp.com/developers/applications/
-* Put your token on line 16
-* Create an imgflip account and put the username and password line 44 & 45
-* Run the bot using Python 3+
+* Create an imgflip account
+* Populate .env.structure with the token from Discord and the ids from ImgFlip then rename it into .env
+* install the required extensions: `pip install discord.py requests dotenv-python`
+* Run the bot with the command: `python3 meme.py`
