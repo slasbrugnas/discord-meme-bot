@@ -9,7 +9,7 @@ idna==2.10
 pipreqs==0.4.10
 requests==2.25.1
 six==1.15.0
-urllib3==1.26.4
+urllib3==1.26.5
 virtualenv==20.4.3
 yarg==0.1.9
 aiohttp==3.7.4.post0
@@ -30,7 +30,7 @@ python-dotenv==0.16.0
 requests==2.25.1
 six==1.15.0
 typing-extensions==3.7.4.3
-urllib3==1.26.4
+urllib3==1.26.5
 virtualenv==20.4.3
 yarg==0.1.9
 yarl==1.6.3
